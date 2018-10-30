@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuevatel.crm.sensor.port.dao.IIntDbLogMessagesDao">
+    <select id="retrieve" parameterType="com.nuevatel.crm.sensor.port.model.ParamIn" resultType="com.nuevatel.crm.sensor.port.model.IntDbLogMessages">
+	 SELECT a.id_log_message as idLogMessage,
+	        a.code_error as codeError,
+	        a.id_integration as idIntegration,
+	        a.id_request as idRequest,
+	        a.id_process_instance as idProcessInstance, 
+	        a.module as module,
+	        a.severity as severity,
+	        a.message as message,
+	        a.register_date as registerDate,
+	        a.status_code as statusCode
+	 FROM integration_esb.log_messages@intdb a 
+	 WHERE module LIKE 'PORT%'  AND a.register_date > SYSDATE -1 and a.severity in('ERROR','WARN') 
+	 ORDER BY a.register_date desc
+		 
+    </select>
+</mapper>

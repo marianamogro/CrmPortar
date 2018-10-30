@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuevatel.crm.sensor.port.dao.IPortDao">
+    <select id="retrieve" parameterType="com.nuevatel.crm.sensor.port.model.ParamIn" resultType="com.nuevatel.crm.sensor.port.model.Port">
+     select   pte.end_datetime  AS endDateTime, 
+          ptb.np_order_id       AS npOrderId,  
+          td.telephone_number AS phoneNumber,
+          ptb.receptor_operator   AS receptorOperator, 
+          ptb.donor_operator      AS donorOperator,
+          ptb.status          AS status,
+         ptb.subtransaction_type   AS subTransactionType, 
+         ptb.start_datetime  AS startDateTime, 
+          pte.end_datetime    AS endDateTime,
+          sysdate       AS recordDate
+  from mj.pg_transaction ptb, pg_transaction_detail td, mj.pg_transaction pte 
+ where ptb.subtransaction_type in (101, 202, 801,714)--, 703, 801, 612, 403, 414)
+ and ptb.request_datetime > '26-oct-2018'
+ and td.transaction_id = ptb.transaction_id
+ and exists ( select 1 from mj.pg_transaction pto
+ where pto.external_transaction_id = ptb.external_transaction_id
+ and pto.subtransaction_type in (100, 200, 800, 600, 610, 700, 710,400, 411)
+ and pto.status in ( 'COM'))
+ and pte.np_order_id = ptb.np_order_id
+ and pte.subtransaction_type in (102, 203, 802,714)--, 703, 801, 612, 403, 414)
+  and pte.status = 'COM'
+ and ptb.status = 'COM'
+  order by ptb.end_datetime
+ 
+		 
+    </select>
+</mapper>

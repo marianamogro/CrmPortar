@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuevatel.crm.sensor.port.dao.ICashBoxProcessDao">
+    
+    <select id="retrieve" parameterType="com.nuevatel.crm.sensor.port.model.ParamIn" resultType="com.nuevatel.crm.sensor.port.model.CashBoxProcess">
+       	
+		SELECT * FROM (
+		SELECT p.process_id as processId, p.process_type_code, p.status, fa.form_id, p.seller_code,p.sale_channel_code, p.creation_date registro_proceso 
+		 , (select ed.description
+		 from config.entity_description ed
+		 where ed.entity_code = 'FLOW'
+		 and ed.value_code = fa.flow_id
+		 and ed.language_code = 'ES') etapa
+		 , fa.flow_id
+		 , fa.action_id 
+		 , fa.tran_date  as fechaEtapa
+		FROM PROCS.PROCESS_FLOW_ACTION_ACTIVE FA
+		 , PROCS.PROCESS P
+		WHERE 1=1
+		-- EN ESPERA EJECUCION PROCESO DE PORTACION MASIVO 513
+		-- INTEGRATION 45
+		--and fa.flow_id = 45
+		AND fa.status = 'A'
+		AND fa.entity_code = 'PROCS.ENTITY_PLAN'
+		AND fa.process_id = p.process_id
+		and p.status not in ('NULLEDF','REJECTED','DESISTED')
+		--AND p.process_type_code = 'PTPORTTOOP' -- 'PTFSALE' -- 'PTPORTTOOP'
+		AND EXISTS (SELECT 1
+		 FROM PROCS.PROCESS_DATA d
+		 WHERE d.process_id = p.process_id
+		 AND d.entity_type_code ='PORT_IN_SALE'
+		 AND d.entity_id = 1)
+		-- AND trunc(fa.tran_date) = trunc(sysdate)
+		 ) x
+		 WHERE X.action_id='107'
+		-- AND fa.action_id ='107'
+		-- and flow_id='519'
+
+    </select>
+  
+      
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuevatel.crm.sensor.port.dao.IMassiveProcessControlDao">
+    <select id="retrieve" parameterType="com.nuevatel.crm.sensor.port.model.ParamIn" resultType="com.nuevatel.crm.sensor.port.model.MassiveProcessControl">
+		select pt.status as status, COUNT(*) as counter
+		  from mj.pg_transaction pt, pg_massive_detail md
+		 where pt.np_order_id = md.np_order_id
+		   and massive_subtransaction_id in
+		       (select massive_subtransaction_id FROM pg_massive_subtransaction
+		         where massive_process_id IN
+		               (select massive_process_id FROM pg_massive_process
+		                 where process_period = to_char(sysdate - 1,'YYYYMMDD')))
+		   and pt.subtransaction_type in (100, 200, 800, 810, 700, 710, 400, 410, 450, 460)
+		   and pt.status  IN ('VFR', 'PRO','COM', 'PEN', 'ERR')
+		group by pt.status
+ 
+		 
+    </select>
+</mapper>
