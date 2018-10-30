@@ -17,7 +17,7 @@ public class SftpCron implements Job {
 	@Override
 	
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub i
 		try {
 			log.debug("Ejecutando Cron");
 			SFtp sFtp = new SFtp();
