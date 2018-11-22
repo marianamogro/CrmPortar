@@ -112,9 +112,9 @@ public class SFtp implements ISftp {
 			String dirLocalCsv = null;
 			String dirExtern = null;
 			Configuration.loadProperties();
-			dirLocalCsv= Configuration.ftpDirLocal+Util.sysdate()+".csv";
-			dirLocal= Configuration.ftpDirLocal+Util.sysdate()+".zip";
-			dirExtern= Configuration.ftpDirExtern+Util.sysdate()+".zip";
+			dirLocalCsv= Configuration.ftpDirLocal+Util.theDayBefore()+".csv";
+			dirLocal= Configuration.ftpDirLocal+Util.theDayBefore()+".zip";
+			dirExtern= Configuration.ftpDirExtern+Util.theDayBefore()+".zip";
 			
 			/*System.out.println(Util.sysdate());*/
 			
