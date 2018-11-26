@@ -19,7 +19,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="com/nuevatel/crm/sensor/db/billing.xml"/>
-         <mapper resource="com/nuevatel/crm/sensor/db/rep_port_dwh.xml"/>
+        <mapper resource="com/nuevatel/crm/sensor/db/process_port_control.xml"/>
     </mappers>
 </configuration>

@@ -42,6 +42,7 @@ public class CronExecutor {
     private String triggerGroup;
     private String cronTimer;
     private static Log log;
+    private Scheduler scheduler;
 	
 	
 	public  Scheduler createScheduler() throws SchedulerException {
@@ -49,11 +50,27 @@ public class CronExecutor {
 		Scheduler scheduler = sf.getScheduler();
 		return scheduler;
 	}
+	public void stopScheduler() {
+		try {
+			this.scheduler.standby();
+		} catch (SchedulerException e) {
+			// TODO Auto-generated catch block
+			log.error("SchedulerException: ",e);
+		}
+	}
+	public void reStartScheduler() {
+		try {
+			this.scheduler.start();
+		} catch (SchedulerException e) {
+			// TODO Auto-generated catch block
+			log.error("SchedulerException: ",e);
+		}
+	}
 	@SuppressWarnings("unchecked")
 	public  void excuteCron(){
 		try{
 		Class<? extends Job> jobClass = (Class<? extends Job>)Class.forName(cronClass);
-		Scheduler scheduler =createScheduler();
+		 scheduler =createScheduler();
 		JobDetail jd = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroup).build();
 		Trigger ct = TriggerBuilder.newTrigger().withIdentity(triggerName, triggerGroup).withSchedule(CronScheduleBuilder.cronSchedule(cronTimer)).build();
 		scheduler.scheduleJob(jd, ct);

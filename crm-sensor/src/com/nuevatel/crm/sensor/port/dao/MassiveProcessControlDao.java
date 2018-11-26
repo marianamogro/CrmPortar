@@ -28,12 +28,12 @@ public class MassiveProcessControlDao implements IMassiveProcessControlDao {
 			IMassiveProcessControlDao mapper = session.getMapper(IMassiveProcessControlDao.class);
 			result = mapper.retrieve(paramIn);
 		} catch (IllegalArgumentException ex) {
-			log.error("MassiveProcessControl: ", ex);
+			log.error("MassiveProcessControl 1 : ", ex);
 			session.rollback();
 		} catch (IOException ex) {
-			log.error("MassiveProcessControl: ", ex);
+			log.error("MassiveProcessControl 2 : ", ex);
 		} catch (Exception ex) {
-			log.error("MassiveProcessControl: ", ex);
+			log.error("MassiveProcessControl 3 : ", ex);
 			session.rollback();
 		} finally {
 			if (session != null) {

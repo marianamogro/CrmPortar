@@ -61,7 +61,7 @@ public class DataBase {
         dataSource.put("OdbDS", dataSourceOdbVo);
         
         DataSourceVo dataSourcePostGresVo = new DataSourceVo();
-        dataSourcePostGresVo.setResource("./com/nuevatel/crm/sensor/db/backup_db-config.xml");
+        dataSourcePostGresVo.setResource("./com/nuevatel/crm/sensor/db/postgres_db-config.xml");
         dataSourcePostGresVo.setSqlSessionFactory(getPostGreSqlSessionFactory(dataSourcePostGresVo.getResource()));
         dataSource.put("PostGresDS", dataSourcePostGresVo);
         

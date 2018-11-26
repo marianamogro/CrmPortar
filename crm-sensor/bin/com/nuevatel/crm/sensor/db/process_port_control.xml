@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="com.nuevatel.crm.sensor.port.dao.IProcessPortControlDao">
+
+   <select id="retrieve" resultType="com.nuevatel.crm.sensor.port.model.ProcessPortControl" parameterType="com.nuevatel.crm.sensor.port.model.ProcessPortControl">
+   SELECT 
+		process_port_control_id as processPortControlId, 
+		stage, 
+		port_number_amount as portNumberAmount, 
+		process_date as processDate, 
+		end_date as endDate
+		FROM public.process_port_control 
+		WHERE process_date = CURRENT_DATE
+		order by 2
+   </select>
+   
+      <select id="retrieveOne" resultType="com.nuevatel.crm.sensor.port.model.ProcessPortControl" parameterType="com.nuevatel.crm.sensor.port.model.ProcessPortControl">
+   SELECT 
+		process_port_control_id as processPortControlId, 
+		stage, 
+		port_number_amount as portNumberAmount, 
+		process_date as processDate, 
+		end_date as endDate
+		FROM public.process_port_control 
+		WHERE process_date = CURRENT_DATE
+		AND   stage = #{stage}
+   </select>
+
+	<insert id="create"	parameterType="com.nuevatel.crm.sensor.port.model.ProcessPortControl">
+	    INSERT INTO public.process_port_control
+		(stage, port_number_amount,	process_date, end_date)
+		VALUES('FTP', 0, current_date , NULL);
+		
+        INSERT INTO public.process_port_control
+		(stage, port_number_amount,	process_date, end_date)
+		VALUES('CONTROL', 0, current_date, NULL);
+		
+		 INSERT INTO public.process_port_control
+		(stage, port_number_amount,	process_date, end_date)
+		VALUES('REPORT', 0, current_date, NULL);
+	</insert>
+
+	<update id="updateProcess" parameterType="com.nuevatel.crm.sensor.port.model.ProcessPortControl">
+		UPDATE public.process_port_control
+		SET port_number_amount=#{portNumberAmount}, end_date =CURRENT_TIMESTAMP
+		WHERE stage= #{stage} and process_date =CURRENT_DATE
+	</update>
+
+</mapper>

@@ -106,7 +106,9 @@ public class SFtp implements ISftp {
 		return null;
 	}
 
-	public void downloadSftp() {
+	@SuppressWarnings("finally")
+	public Integer downloadSftp() {
+		Integer result =-1;
 		try {
 			String dirLocal = null;
 			String dirLocalCsv = null;
@@ -130,11 +132,14 @@ public class SFtp implements ISftp {
 			Csv csv = new Csv();
 			Integer counter = csv.countCsvRows(dirLocalCsv);
 			counter = counter - 1;
+			result = counter;
 			System.out.println("Terminso " + counter);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error("Error bajando los archivos ",ex);
 
 			System.out.println(ex.getMessage());
+		}finally {
+			return result;
 		}
 	}
 
